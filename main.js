@@ -1,4 +1,4 @@
-const Discord = require('discord.js');
+const Discord = require('discord.js-12');
 const ffmpeg = require('ffmpeg-static');
 
 const client = new Discord.Client();
