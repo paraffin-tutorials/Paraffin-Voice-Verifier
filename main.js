@@ -3,9 +3,11 @@ const ffmpeg = require('ffmpeg-static');
 
 const client = new Discord.Client();
 
-client.on ('ready', () =>
+client.on ('ready', async () =>
 {
-    console.log(`Logged in ${ client.user.tag }`);
+    await client.user.setActivity('Paraffin Guild', { type: 'WATCHING' });
+
+    console.log(`Logged in ${client.user.tag}`);
 });
 
 client.on('voiceStateUpdate', async (OldVoiceState, NewVoiceState) =>
@@ -15,13 +17,13 @@ client.on('voiceStateUpdate', async (OldVoiceState, NewVoiceState) =>
         if (NewVoiceState.channel.id === '840294590770184263')
         {
             const channel = client.channels.cache.get('840294590770184263');
-            const role = NewVoiceState.guild.roles.cache.find((Role) => Role.name === '< Verified Member />');
+            const role = await NewVoiceState.guild.roles.cache.find((Role) => Role.name === '< Verified Member />');
 
             const connection = await channel.join();
 
             connection.play('./rulesVoice.m4a');
 
-            NewVoiceState.member.roles.add(role);
+            await NewVoiceState.member.roles.add(role);
 
             console.log(`Member: ${NewVoiceState.member.user.tag} connected to ${NewVoiceState.channel.name}.`);
         }
@@ -30,7 +32,7 @@ client.on('voiceStateUpdate', async (OldVoiceState, NewVoiceState) =>
     {
         if (OldVoiceState.channel.id === "840294590770184263")
         {
-            OldVoiceState.channel.leave();
+            await OldVoiceState.channel.leave();
 
             console.log(`Rules Voice: ${OldVoiceState.member.user.tag} disconnected to ${OldVoiceState.channel.name}.`);
 
