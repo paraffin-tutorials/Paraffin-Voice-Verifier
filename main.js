@@ -7,7 +7,7 @@ client.on ('ready', async () =>
 {
     await client.user.setActivity('Paraffin Guild', { type: 'WATCHING' });
 
-    console.log(`Logged in ${client.user.tag}`);
+    console.log(`Logged in ${ client.user.tag }`);
 });
 
 client.on('voiceStateUpdate', async (OldVoiceState, NewVoiceState) =>
@@ -25,27 +25,27 @@ client.on('voiceStateUpdate', async (OldVoiceState, NewVoiceState) =>
 
             await NewVoiceState.member.roles.add(role);
 
-            console.log(`Member: ${NewVoiceState.member.user.tag} connected to ${NewVoiceState.channel.name}.`);
+            console.log(`Member: ${ NewVoiceState.member.user.tag } connected to ${ NewVoiceState.channel.name }.`);
         }
     }
     else if (OldVoiceState.channel)
     {
-        if (OldVoiceState.channel.id === "840294590770184263")
+        if (OldVoiceState.channel.id === '840294590770184263')
         {
             await OldVoiceState.channel.leave();
 
-            console.log(`Rules Voice: ${OldVoiceState.member.user.tag} disconnected to ${OldVoiceState.channel.name}.`);
+            console.log(`Rules Voice: ${ OldVoiceState.member.user.tag } disconnected to ${ OldVoiceState.channel.name }.`);
 
-            console.log(`Bot: I left the ${OldVoiceState.channel.name}ٰ.`);
+            console.log(`Bot: I left the ${ OldVoiceState.channel.name }ٰ.`);
         }
     }
 });
 
-process.on("unhandledRejection", (reason, promise) =>
+process.on('unhandledRejection', (reason, promise) =>
 {
     try
     {
-        console.error("Unhandled Rejection at: ", promise, "reason: ", reason.stack || reason);
+        console.error('Unhandled Rejection at: ', promise, 'reason: ', reason.stack || reason);
     }
     catch
     {
