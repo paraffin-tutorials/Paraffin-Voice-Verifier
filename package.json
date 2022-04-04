@@ -18,8 +18,12 @@
   },
   "homepage": "https://github.com/im-parsa/Paraffin-Voice-Verifier#readme",
   "dependencies": {
-    "@discordjs/opus": "^0.7.0",
-    "discord.js-12": "^1.0.2",
-    "ffmpeg-static": "^4.4.1"
+    "@discordjs/voice": "^0.8.0",
+    "discord.js": "^13.6.0",
+    "express": "^4.17.3",
+    "ffmpeg": "^0.0.4",
+    "ffmpeg-static": "^4.4.1",
+    "opusscript": "^0.0.8",
+    "libsodium-wrappers": "^0.7.9"
   }
 }
