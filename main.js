@@ -1,51 +1,57 @@
-const Discord = require('discord.js-12');
 const ffmpeg = require('ffmpeg-static');
+const { Client, Intents } = require('discord.js');
+const voiceDiscord = require(`@discordjs/voice`);
+const { createAudioPlayer, createAudioResource, NoSubscriberBehavior } = require('@discordjs/voice');
 
-const client = new Discord.Client();
+const client = new Client({ intents: 
+  [
+    Intents.FLAGS.GUILDS,
+    Intents.FLAGS.GUILD_VOICE_STATES
+  ] });
 
-client.on ('ready', async () =>
+client.on('ready', () => 
 {
-    await client.user.setActivity('Paraffin Guild', { type: 'WATCHING' });
-
-    console.log(`Logged in ${ client.user.tag }`);
+  console.log(`Logged in as ${client.user.tag}!`);
 });
 
 client.on('voiceStateUpdate', async (OldVoiceState, NewVoiceState) =>
 {
-    if (NewVoiceState.channel)
+    const guild = client.guilds.cache.get('796767783354368030');
+    const connection = voiceDiscord.joinVoiceChannel(
+      {
+        channelId: '959872637058842674',
+        guildId: '796767783354368030',
+        adapterCreator: guild.voiceAdapterCreator,
+        selfDeaf: true,
+    });
+    const player = createAudioPlayer(
+      {
+        behaviors:
+          {
+            noSubscriber: NoSubscriberBehavior.Pause,
+          }
+      });
+  
+    if (NewVoiceState.channel && NewVoiceState.member.user.id !== '743740869773099058')
     {
-        if (NewVoiceState.channel.id === '840294590770184263')
-        {
-            const channel = client.channels.cache.get('840294590770184263');
             const role = await NewVoiceState.guild.roles.cache.find((Role) => Role.name === '< Verified Member />');
-
-            const connection = await channel.join();
-
-            connection.play('./rulesVoice.m4a');
+          
+            const resource = createAudioResource('./rulesVoice.m4a');
+          
+            player.play(resource);  
+            connection.subscribe(player);
 
             await NewVoiceState.member.roles.add(role);
 
-            console.log(`Member: ${ NewVoiceState.member.user.tag } connected to ${ NewVoiceState.channel.name }.`);
-        }
-    }
-    else if (OldVoiceState.channel)
-    {
-        if (OldVoiceState.channel.id === '840294590770184263')
-        {
-            await OldVoiceState.channel.leave();
-
-            console.log(`Rules Voice: ${ OldVoiceState.member.user.tag } disconnected to ${ OldVoiceState.channel.name }.`);
-
-            console.log(`Bot: I left the ${ OldVoiceState.channel.name }ٰ.`);
-        }
+            console.log(`Member: ${NewVoiceState.member.user.tag} connected to ${NewVoiceState.channel.name}.`);
     }
 });
 
-process.on('unhandledRejection', (reason, promise) =>
+process.on("unhandledRejection", (reason, promise) =>
 {
     try
     {
-        console.error('Unhandled Rejection at: ', promise, 'reason: ', reason.stack || reason);
+        console.error("Unhandled Rejection at: ", promise, "reason: ", reason.stack || reason);
     }
     catch
     {
